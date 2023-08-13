@@ -82,10 +82,37 @@ const u16 logoTileMap[] = {
 04 | (PAL2<<10), 04 | (PAL2<<10), 04 | (PAL2<<10), 04 | (PAL2<<10), 04 | (PAL2<<10), 04 | (PAL2<<10), 04 | (PAL2<<10), 04 | (PAL2<<10), 04 | (PAL2<<10), 04 | (PAL2<<10), 04 | (PAL2<<10), 04 | (PAL2<<10), 04 | (PAL2<<10), 04 | (PAL2<<10), 04 | (PAL2<<10), 04 | (PAL2<<10), 04 | (PAL2<<10), 04 | (PAL2<<10), 04 | (PAL2<<10), 04 | (PAL2<<10), 04 | (PAL2<<10), 04 | (PAL2<<10), 04 | (PAL2<<10), 04 | (PAL2<<10), 04 | (PAL2<<10), 04 | (PAL2<<10), 04 | (PAL2<<10), 04 | (PAL2<<10), 04 | (PAL2<<10), 04 | (PAL2<<10), 04 | (PAL2<<10), 04 | (PAL2<<10)
 };
 
+u16 logoPalettePVSnesLib[] = {
+    whiteColor, 
+
+    RGB8(252, 254, 252),
+    RGB8(0, 0, 0),
+    RGB8(0, 0, 0), 
+    RGB8(24, 178, 28),
+    RGB8(161, 213, 183),
+    RGB8(165, 174, 224),
+
+    RGB8(44, 52, 174),
+    RGB8(42, 76, 197),
+    RGB8(71, 129, 253),
+    RGB8(79, 166, 253),
+
+    RGB8(26, 18, 94),
+    RGB8(45, 32, 161),
+    RGB8(94, 83, 201),
+    RGB8(167, 159, 237),
+
+    whiteColor
+};
+
 // RAM
 
 u16 bgTileIndex;
 u16 bg3TileMap[1024];
+u8 logoState;
+u8 logoTimer;
+u8 logoColorCounter;
+u8 logoColorSpeed;
 
 void initLogoMusic() {
     spcSetBank(&SOUNDBANK__);
@@ -115,6 +142,49 @@ void initBackgroundPalette(u8 *source, u16 tilePaletteNumber) {
     dmaCopyCGram(source, tilePaletteNumber<<4, 32);
 }
 
+void insertElement(u16 array[], u8 startIndex, u8 maxIndex, u16 value) {
+    while (startIndex < 14) {
+        array[startIndex] = array[startIndex + 1];
+        startIndex++;
+    }
+
+    // Insert the new element at the specified index
+    array[maxIndex] = value;
+}
+
+void updateLogo() {
+    switch(logoState) {
+        case 0:
+            if (logoTimer == 40) {
+                logoState = 1;
+                logoColorCounter = 0;
+                logoColorSpeed = 4;
+            }
+
+            logoTimer++;
+            break;
+
+        case 1:
+            if(logoColorCounter < 4) {
+                if (logoColorSpeed == 4) {
+                    insertElement(logoPalettePVSnesLib, 7, 10, logoPalettePVSnesLib[7]);
+                    insertElement(logoPalettePVSnesLib, 11, 14, logoPalettePVSnesLib[11]);
+                    dmaCopyCGram((u8 *)logoPalettePVSnesLib, PAL1<<4, 32);
+                    logoColorCounter++;
+                }
+
+                logoColorSpeed -= 1;
+                if (logoColorSpeed == 0) {
+                    logoColorSpeed = 4;
+                }
+
+            } else {
+                logoState = 2;
+            }
+            break;
+    }
+}
+
 int main(void) {
     // Initialize sound engine (take some time)
     spcBoot();
@@ -123,6 +193,9 @@ int main(void) {
     consoleInit();
 
     dmaClearVram();
+
+    logoState = 0;
+    logoTimer = 0;
 
     // Load company fire on BG1
     bgSetMapPtr(BG0, 0x0000, SC_32x32);
@@ -153,11 +226,13 @@ int main(void) {
     bgSetEnable(BG2);
     bgSetDisable(BG3);
 
-    setFadeEffect(FADE_IN);
-    //setFadeEffectEx(FADE_IN, 8);
+    //setFadeEffect(FADE_IN);
+    setFadeEffectEx(FADE_IN, 8);
 	WaitForVBlank();
     
     while (1) {
+        updateLogo();
+
         // Wait vblank and display map on screen
         WaitForVBlank();
     }
