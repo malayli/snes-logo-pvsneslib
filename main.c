@@ -118,7 +118,7 @@ u8 logoColorSpeed;
 */
 void initLogoMusic() {
     spcSetBank(&SOUNDBANK__);
-    spcLoad(0);
+    spcLoad(MOD_LOGO);
 }
 
 /*!\brief Set all the tiles to 0, set a palette number and a tile priority.
@@ -182,7 +182,7 @@ void initLogo() {
     initBg3White();
 
     WaitForVBlank();
-    initLogoMusic(MOD_LOGO);
+    initLogoMusic();
     
     WaitForVBlank();
     spcPlay(0);
