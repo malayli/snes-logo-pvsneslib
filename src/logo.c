@@ -8,15 +8,16 @@
 #include <snes.h>
 #include "soundbank.h"
 
+// ROM
+
 #define BG0 0
 #define BG1 1
 #define BG2 2
 #define BG3 3
+
 #define PAL0 0
 #define PAL1 1
 #define PAL2 2
-
-// ROM
 
 #define whiteColor RGB8(255, 255, 255)
 
