@@ -8,7 +8,7 @@ https://github.com/alekmaul/pvsneslib
 
 ## Credits
 
-Graphics and sound made by lunoka.
+Graphics and sound made by [lunoka](https://github.com/lunoka)
 
 ## Preview
 ![preview](preview.png)
