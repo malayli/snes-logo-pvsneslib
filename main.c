@@ -114,6 +114,8 @@ u8 logoTimer;
 u8 logoColorCounter;
 u8 logoColorSpeed;
 
+/*!\brief Load the logo music.
+*/
 void initLogoMusic() {
     spcSetBank(&SOUNDBANK__);
     spcLoad(0);
@@ -128,6 +130,8 @@ void clearBgTextEx(u16 *tileMap, u8 paletteNumber, u8 priority) {
     }
 }
 
+/*!\brief Create a white background on B3.
+*/
 void initBg3White() {
     bgSetMapPtr(BG2, 0x0000 + 2048, SC_32x32);
     bgSetGfxPtr(BG2, 0x5000);
@@ -138,12 +142,14 @@ void initBg3White() {
     dmaCopyVram((u8 *)emptyPicture, 0x5000, 32);
 }
 
+/*!\brief Copy the givent palette to CGRAM.
+*/
 void initBackgroundPalette(u8 *source, u16 tilePaletteNumber) {
     dmaCopyCGram(source, tilePaletteNumber<<4, 32);
 }
 
 void insertElement(u16 array[], u8 startIndex, u8 maxIndex, u16 value) {
-    while (startIndex < 14) {
+    while (startIndex < maxIndex) {
         array[startIndex] = array[startIndex + 1];
         startIndex++;
     }
@@ -228,8 +234,8 @@ int main(void) {
 
     //setFadeEffect(FADE_IN);
     setFadeEffectEx(FADE_IN, 8);
-	WaitForVBlank();
-    
+    WaitForVBlank();
+
     while (1) {
         updateLogo();
 
