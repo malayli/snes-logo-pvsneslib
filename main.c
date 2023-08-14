@@ -82,6 +82,8 @@ const u16 logoTileMap[] = {
 04 | (PAL2<<10), 04 | (PAL2<<10), 04 | (PAL2<<10), 04 | (PAL2<<10), 04 | (PAL2<<10), 04 | (PAL2<<10), 04 | (PAL2<<10), 04 | (PAL2<<10), 04 | (PAL2<<10), 04 | (PAL2<<10), 04 | (PAL2<<10), 04 | (PAL2<<10), 04 | (PAL2<<10), 04 | (PAL2<<10), 04 | (PAL2<<10), 04 | (PAL2<<10), 04 | (PAL2<<10), 04 | (PAL2<<10), 04 | (PAL2<<10), 04 | (PAL2<<10), 04 | (PAL2<<10), 04 | (PAL2<<10), 04 | (PAL2<<10), 04 | (PAL2<<10), 04 | (PAL2<<10), 04 | (PAL2<<10), 04 | (PAL2<<10), 04 | (PAL2<<10), 04 | (PAL2<<10), 04 | (PAL2<<10), 04 | (PAL2<<10), 04 | (PAL2<<10)
 };
 
+// RAM
+
 u16 logoPalettePVSnesLib[] = {
     whiteColor, 
 
@@ -104,8 +106,6 @@ u16 logoPalettePVSnesLib[] = {
 
     whiteColor
 };
-
-// RAM
 
 u16 bgTileIndex;
 u16 bg3TileMap[1024];
