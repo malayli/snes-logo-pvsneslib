@@ -142,12 +142,6 @@ void initBg3White() {
     dmaCopyVram((u8 *)emptyPicture, 0x5000, 32);
 }
 
-/*!\brief Copy the given palette to CGRAM.
-*/
-void initBackgroundPalette(u8 *source, u16 tilePaletteNumber) {
-    dmaCopyCGram(source, tilePaletteNumber<<4, 32);
-}
-
 /*!\brief Insert a value at maxIndex.
 */
 void insertElement(u16 array[], u8 startIndex, u8 maxIndex, u16 value) {
