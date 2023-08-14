@@ -155,9 +155,9 @@ void insertElement(u16 array[], u8 startIndex, u8 maxIndex, u16 value) {
     array[maxIndex] = value;
 }
 
-/*!\brief Initialize the logo screen.
+/*!\brief Initialize the "Made with PVSnesLib" logo screen.
 */
-void initLogo() {
+void initPVSnesLibLogo() {
     logoState = 0;
     logoTimer = 0;
 
@@ -191,9 +191,9 @@ void initLogo() {
     bgSetDisable(BG3);
 }
 
-/*!\brief Update logo animation.
+/*!\brief Update "Made with PVSnesLib" logo animation.
 */
-void updateLogo() {
+void updatePVSnesLibLogo() {
     switch(logoState) {
         case 0:
             if (logoTimer == 40) {

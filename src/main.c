@@ -17,14 +17,14 @@ int main(void) {
 
     dmaClearVram();
 
-    initLogo();
+    initPVSnesLibLogo();
 
     //setFadeEffect(FADE_IN);
     setFadeEffectEx(FADE_IN, 8);
     WaitForVBlank();
 
     while (1) {
-        updateLogo();
+        updatePVSnesLibLogo();
 
         spcProcess();
 
