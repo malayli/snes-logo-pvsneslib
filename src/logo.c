@@ -160,7 +160,7 @@ void initLogo() {
     logoState = 0;
     logoTimer = 0;
 
-    // Load company fire on BG1
+    // Load logo on BG1
     bgSetMapPtr(BG0, 0x0000, SC_32x32);
     bgInitTileSet(BG0, 
         &logoPic,
