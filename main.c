@@ -142,12 +142,14 @@ void initBg3White() {
     dmaCopyVram((u8 *)emptyPicture, 0x5000, 32);
 }
 
-/*!\brief Copy the givent palette to CGRAM.
+/*!\brief Copy the given palette to CGRAM.
 */
 void initBackgroundPalette(u8 *source, u16 tilePaletteNumber) {
     dmaCopyCGram(source, tilePaletteNumber<<4, 32);
 }
 
+/*!\brief Insert a value at maxIndex.
+*/
 void insertElement(u16 array[], u8 startIndex, u8 maxIndex, u16 value) {
     while (startIndex < maxIndex) {
         array[startIndex] = array[startIndex + 1];
@@ -158,6 +160,8 @@ void insertElement(u16 array[], u8 startIndex, u8 maxIndex, u16 value) {
     array[maxIndex] = value;
 }
 
+/*!\brief Update logo animation.
+*/
 void updateLogo() {
     switch(logoState) {
         case 0:
