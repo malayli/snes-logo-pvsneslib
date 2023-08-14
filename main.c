@@ -160,6 +160,42 @@ void insertElement(u16 array[], u8 startIndex, u8 maxIndex, u16 value) {
     array[maxIndex] = value;
 }
 
+/*!\brief Initialize the logo screen.
+*/
+void initLogo() {
+    logoState = 0;
+    logoTimer = 0;
+
+    // Load company fire on BG1
+    bgSetMapPtr(BG0, 0x0000, SC_32x32);
+    bgInitTileSet(BG0, 
+        &logoPic,
+        &logoPalette,
+        PAL1,
+        (&logoPic_end - &logoPic),
+        16*2*2,
+        BG_16COLORS,
+        0x3000);
+    WaitForVBlank();
+    dmaCopyVram((u8 *)logoTileMap, 0x0000, 1024*2);
+
+    initBg3White();
+
+    WaitForVBlank();
+    initLogoMusic(MOD_LOGO);
+    
+    WaitForVBlank();
+    spcPlay(0);
+    spcProcess();
+    WaitForVBlank();
+    
+    setMode(BG_MODE1, 0);
+    bgSetEnable(BG0);
+    bgSetDisable(BG1);
+    bgSetEnable(BG2);
+    bgSetDisable(BG3);
+}
+
 /*!\brief Update logo animation.
 */
 void updateLogo() {
@@ -204,37 +240,7 @@ int main(void) {
 
     dmaClearVram();
 
-    logoState = 0;
-    logoTimer = 0;
-
-    // Load company fire on BG1
-    bgSetMapPtr(BG0, 0x0000, SC_32x32);
-    bgInitTileSet(BG0, 
-        &logoPic,
-        &logoPalette,
-        PAL1,
-        (&logoPic_end - &logoPic),
-        16*2*2,
-        BG_16COLORS,
-        0x3000);
-    WaitForVBlank();
-    dmaCopyVram((u8 *)logoTileMap, 0x0000, 1024*2);
-
-    initBg3White();
-
-    WaitForVBlank();
-    initLogoMusic(MOD_LOGO);
-    
-    WaitForVBlank();
-    spcPlay(0);
-    spcProcess();
-    WaitForVBlank();
-    
-    setMode(BG_MODE1, 0);
-    bgSetEnable(BG0);
-    bgSetDisable(BG1);
-    bgSetEnable(BG2);
-    bgSetDisable(BG3);
+    initLogo();
 
     //setFadeEffect(FADE_IN);
     setFadeEffectEx(FADE_IN, 8);
