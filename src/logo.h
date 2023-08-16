@@ -1,2 +1,2 @@
 void initPVSnesLibLogo();
-void updatePVSnesLibLogo();
+u8 updatePVSnesLibLogo();

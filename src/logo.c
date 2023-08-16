@@ -123,6 +123,9 @@ void initLogoMusic() {
 }
 
 /*!\brief Set all the tiles to 0, set a palette number and a tile priority.
+    \param tileMap the tile map to clear
+    \param paletteNumber the palette number
+    \param priority the tile priority
 */
 void clearBgTextEx(u16 *tileMap, u8 paletteNumber, u8 priority) {
     for (bgTileIndex=0; bgTileIndex < 1024;) {
@@ -139,27 +142,38 @@ void initBg3White() {
     clearBgTextEx((u16 *)bg3TileMap, PAL0, 0);
     WaitForVBlank();
     setPaletteColor(PAL0, whiteColor);
+
+    // Copy the BG3 tile map to VRAM
     dmaCopyVram((u8 *)bg3TileMap, 0x1000, 32*32*2);
+
+    // Copy the BG3 tile set to VRAM
     dmaCopyVram((u8 *)emptyPicture, 0x5000, 32);
 }
 
-/*!\brief Insert a value at maxIndex.
+/*!\brief Insert a value at endIndex.
+    \param array the array to update
+    \param startIndex the start index
+    \param endIndex the max index
+    \param value the value to insert
 */
-void insertElement(u16 array[], u8 startIndex, u8 maxIndex, u16 value) {
-    while (startIndex < maxIndex) {
+void insertElement(u16 array[], u8 startIndex, u8 endIndex, u16 value) {
+    while (startIndex < endIndex) {
         array[startIndex] = array[startIndex + 1];
         startIndex++;
     }
 
     // Insert the new element at the specified index
-    array[maxIndex] = value;
+    array[endIndex] = value;
 }
+
+u16 framesCounter;
 
 /*!\brief Initialize the "Made with PVSnesLib" logo screen.
 */
 void initPVSnesLibLogo() {
     logoState = 0;
     logoTimer = 0;
+    framesCounter = 0;
 
     // Load logo on BG1
     bgSetMapPtr(BG0, 0x0000, SC_32x32);
@@ -192,8 +206,9 @@ void initPVSnesLibLogo() {
 }
 
 /*!\brief Update "Made with PVSnesLib" logo animation.
+    \return 1 when the logo animation is complete.
 */
-void updatePVSnesLibLogo() {
+u8 updatePVSnesLibLogo() {
     switch(logoState) {
         case 0:
             if (logoTimer == 40) {
@@ -203,6 +218,8 @@ void updatePVSnesLibLogo() {
             }
 
             logoTimer++;
+
+            spcProcess();
             break;
 
         case 1:
@@ -219,9 +236,22 @@ void updatePVSnesLibLogo() {
                     logoColorSpeed = 4;
                 }
 
+                spcProcess();
+
             } else {
-                logoState = 2;
+                if (framesCounter == 112) {
+                    spcStop();
+                    logoState = 2;
+                }
             }
             break;
+
+        case 2:
+            spcProcess();
+            return 1;
     }
+
+    framesCounter++;
+    
+    return 0;
 }

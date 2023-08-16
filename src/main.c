@@ -24,9 +24,11 @@ int main(void) {
     WaitForVBlank();
 
     while (1) {
-        updatePVSnesLibLogo();
-
-        spcProcess();
+        if (updatePVSnesLibLogo() == 1) {
+            // The logo animation is complete
+            // Paste your game code here
+            // consoleNocashMessage("Start your game!");
+        }
 
         // Wait for vblank
         WaitForVBlank();
