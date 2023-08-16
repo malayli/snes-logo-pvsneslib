@@ -206,7 +206,7 @@ void initPVSnesLibLogo() {
 }
 
 /*!\brief Update "Made with PVSnesLib" logo animation.
-    \return 1 when the logo animation is complete.
+    \return 1 when the logo animation is complete, 0 otherwise.
 */
 u8 updatePVSnesLibLogo() {
     switch(logoState) {
@@ -252,6 +252,6 @@ u8 updatePVSnesLibLogo() {
     }
 
     framesCounter++;
-    
+
     return 0;
 }
