@@ -2,6 +2,7 @@
 
 
     "Made with PVSnesLib" Logo for SNES Projects
+    Author: digifox
 
 
 ---------------------------------------------------------------------------------*/
